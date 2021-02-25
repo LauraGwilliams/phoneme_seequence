@@ -126,7 +126,7 @@ key_resp_2 = keyboard.Keyboard()
 
 # Initialize components for Routine "audio"
 audioClock = core.Clock()
-audio_word = sound.Sound('A', secs=-1, stereo=True, hamming=True,
+audio_word = sound.Sound('A', secs=-1, stereo=True, hamming=False,
     name='audio_word')
 audio_word.setVolume(1)
 
@@ -432,7 +432,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 trials = data.TrialHandler(nReps=4, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('barakeet_trial_info-1.xlsx'),
+    trialList=data.importConditions('barakeet_trial_info-1.csv'),
     seed=None, name='trials')
 thisExp.addLoop(trials)  # add the loop to the experiment
 thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
