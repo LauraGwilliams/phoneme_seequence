@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This experiment was created using PsychoPy3 Experiment Builder (v2020.2.9),
-    on Mon Feb  1 10:03:00 2021
+    on Sun Feb 28 14:46:54 2021
 If you publish work using this script the most relevant publication is:
 
     Peirce J, Gray JR, Simpson S, MacAskill M, Höchenberger R, Sogo H, Kastman E, Lindeløv JK. (2019) 
@@ -19,7 +19,7 @@ psychopy.useVersion('2020.2')
 
 from psychopy import locale_setup
 from psychopy import prefs
-prefs.hardware['audioLib'] = 'ptb'
+prefs.hardware['audioLib'] = 'sounddevice'
 prefs.hardware['audioLatencyMode'] = '3'
 from psychopy import sound, gui, visual, core, data, event, logging, clock
 from psychopy.constants import (NOT_STARTED, STARTED, PLAYING, PAUSED,
@@ -57,7 +57,7 @@ filename = _thisDir + os.sep + u'data/%s_%s_%s' % (expInfo['Subject ID'], expNam
 # An ExperimentHandler isn't essential but helps with data saving
 thisExp = data.ExperimentHandler(name=expName, version='',
     extraInfo=expInfo, runtimeInfo=None,
-    originPath='/Users/lauragwilliams/Dropbox (UCSF Department of Neurological Surgery)/lg/lexical_access/new_task/sequence/sequence-2_lastrun.py',
+    originPath='/Users/lauragwilliams/Documents/projects/barakeet/phoneme_seequence/sequence/sequence-2_lastrun.py',
     savePickle=True, saveWideText=True,
     dataFileName=filename)
 # save a log file for detail verbose info
@@ -132,12 +132,20 @@ audio_word.setVolume(1)
 
 # Initialize components for Routine "response"
 responseClock = core.Clock()
+photodiode = visual.ImageStim(
+    win=win,
+    name='photodiode', 
+    image='stimuli/photodiode.png', mask=None,
+    ori=0, pos=(0.8, 0.4), size=(0.5, 0.5),
+    color=[1,1,1], colorSpace='rgb', opacity=1,
+    flipHoriz=False, flipVert=False,
+    texRes=512, interpolate=True, depth=0.0)
 slider = visual.Slider(win=win, name='slider',
     size=(0.8, 0.1), pos=(0, 0), units=None,
     labels=None, ticks=(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
     granularity=0, style=['rating'],
     color='black', font='HelveticaBold',
-    flip=False, depth=0)
+    flip=False, depth=-1)
 mouse = event.Mouse(win=win)
 x, y = [None, None]
 mouse.mouseClock = core.Clock()
@@ -432,7 +440,7 @@ routineTimer.reset()
 # set up handler to look after randomisation of conditions etc
 trials = data.TrialHandler(nReps=4, method='random', 
     extraInfo=expInfo, originPath=-1,
-    trialList=data.importConditions('barakeet_trial_info-2.xlsx'),
+    trialList=data.importConditions('barakeet_trial_info-2.csv'),
     seed=None, name='trials')
 thisExp.addLoop(trials)  # add the loop to the experiment
 thisTrial = trials.trialList[0]  # so we can initialise stimuli with some values
@@ -536,7 +544,7 @@ for thisTrial in trials:
     
     
     # keep track of which components have finished
-    responseComponents = [slider, mouse]
+    responseComponents = [photodiode, slider, mouse]
     for thisComponent in responseComponents:
         thisComponent.tStart = None
         thisComponent.tStop = None
@@ -558,6 +566,15 @@ for thisTrial in trials:
         tThisFlipGlobal = win.getFutureFlipTime(clock=None)
         frameN = frameN + 1  # number of completed frames (so 0 is the first frame)
         # update/draw components on each frame
+        
+        # *photodiode* updates
+        if photodiode.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
+            # keep track of start time/frame for later
+            photodiode.frameNStart = frameN  # exact frame index
+            photodiode.tStart = t  # local t and not account for scr refresh
+            photodiode.tStartRefresh = tThisFlipGlobal  # on global time
+            win.timeOnFlip(photodiode, 'tStartRefresh')  # time at next scr refresh
+            photodiode.setAutoDraw(True)
         
         # *slider* updates
         if slider.status == NOT_STARTED and tThisFlip >= 0.0-frameTolerance:
@@ -612,6 +629,8 @@ for thisTrial in trials:
     for thisComponent in responseComponents:
         if hasattr(thisComponent, "setAutoDraw"):
             thisComponent.setAutoDraw(False)
+    trials.addData('photodiode.started', photodiode.tStartRefresh)
+    trials.addData('photodiode.stopped', photodiode.tStopRefresh)
     trials.addData('slider.response', slider.getRating())
     trials.addData('slider.rt', slider.getRT())
     trials.addData('slider.started', slider.tStartRefresh)
